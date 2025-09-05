@@ -1,7 +1,5 @@
 # Getting Started with Prism Web SDK
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
 ## Available Scripts
 
 In the project directory, you can run:
@@ -19,7 +17,7 @@ You will also see any lint errors in the console.
 Launches the test runner in the interactive watch mode.\
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
+### `npm run build:dev` or `npm run build:cdn:dev`
 
 Builds the app for production to the `build` folder.\
 It correctly bundles React in production mode and optimizes the build for the best performance.
@@ -33,24 +31,9 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 
 We support overriding custom strings for a specific language. Here is an example of how this can be achived.
 
-
 ```html
-window.addEventListener('onPrismLoaded', async function (event) {
-    await event.detail.prism.render({
-        localization: {
-        language: 'en',
-        fallbackLanguage: 'en',
-        resources: {
-            en: {
-                translation: {
-                    leveling: {
-                        title: 'New title (override)'
-                    }
-                }
-            }
-        },
-        merge: true
-        }
-    })
-});
+window.addEventListener('onPrismLoaded', async function (event) { await
+event.detail.prism.render({ localization: { language: 'en', fallbackLanguage:
+'en', resources: { en: { translation: { leveling: { title: 'New title
+(override)' } } } }, merge: true } }) });
 ```

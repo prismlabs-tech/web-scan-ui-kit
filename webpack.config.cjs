@@ -142,19 +142,37 @@ module.exports = {
       },
     ],
   },
+  experiments: process.env.DEPLOYMENT_TYPE === 'module' ? { outputModule: true } : {},
   resolve,
-  output: {
-    clean: true,
-    filename: isDev ? 'default/[name].js' : '[name].js',
-    library: {
-      name: 'Prism',
-      type: defaultLibTarget,
-      umdNamedDefine: true,
-    },
-    path: buildPath,
-    publicPath: 'auto',
-    globalObject: 'this',
-  },
+  output: (() => {
+    if (process.env.DEPLOYMENT_TYPE === 'module') {
+      return {
+        clean: true,
+        filename: 'prism.js',
+        path: path.resolve(__dirname, 'dist'),
+        library: {
+          type: 'module',
+        },
+        environment: {
+          module: true,
+        },
+        publicPath: 'auto',
+      }
+    }
+    // Default: CDN/UMD
+    return {
+      clean: true,
+      filename: isDev ? 'default/[name].js' : '[name].js',
+      library: {
+        name: 'Prism',
+        type: defaultLibTarget,
+        umdNamedDefine: true,
+      },
+      path: buildPath,
+      publicPath: 'auto',
+      globalObject: 'this',
+    }
+  })(),
   devServer: {
     port: 3000,
     hot: true,
@@ -167,24 +185,29 @@ module.exports = {
     },
   },
   watchOptions: { ignored: ['/src/tailwind.css'] },
-  optimization: {
-    removeAvailableModules: true,
-    minimizer: [
-      new TerserPlugin({
-        extractComments: false,
-        parallel: true,
-        terserOptions: {
-          ie8: false,
-          mangle: true,
-          format: {
-            comments: false,
-          },
-          compress: {
-            pure_funcs: ['console.info', 'console.debug', 'console.warn'],
-          },
+  optimization:
+    process.env.DEPLOYMENT_TYPE === 'module'
+      ? {
+          minimize: false,
+        }
+      : {
+          removeAvailableModules: true,
+          minimizer: [
+            new TerserPlugin({
+              extractComments: false,
+              parallel: true,
+              terserOptions: {
+                ie8: false,
+                mangle: true,
+                format: {
+                  comments: false,
+                },
+                compress: {
+                  pure_funcs: ['console.info', 'console.debug', 'console.warn'],
+                },
+              },
+            }),
+          ],
         },
-      }),
-    ],
-  },
   plugins: isDev ? devPlugins : prodPlugins,
 }

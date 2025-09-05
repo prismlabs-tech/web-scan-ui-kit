@@ -10,13 +10,13 @@ PROD_REGEXP="^v(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$"
 
 if [[ "$CIRCLE_TAG" =~ $PROD_REGEXP ]]; then
     echo "Production release detected: $CIRCLE_TAG"
-    npm run build:prod
+    npm run build:cdn:prod
 
 elif [[ "$CIRCLE_TAG" =~ $STAGE_REGEXP ]]; then
     echo "Stage release detected: $CIRCLE_TAG"
-    npm run build:stage
+    npm run build:cdn:stage
 
 else
     echo "Dev build for: $CIRCLE_TAG"
-    npm run build:dev
+    npm run build:cdn:dev
 fi

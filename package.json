@@ -1,9 +1,18 @@
 {
-  "name": "prism-web-scan-ui-kit",
+  "name": "@prismlabs/web-ui-kit",
   "version": "0.1.0",
-  "description": "UI for the Prism web scanning SDK",
+  "description": "Core functionality for the Prism web scanning SDK",
   "homepage": "https://prismlabs.tech",
-  "main": "build/prism.js",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
+    }
+  },
   "keywords": [
     "prism",
     "web",
@@ -17,12 +26,9 @@
   "license": "Apache-CLA",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://bitbucket.org/nakedlabs/web-scan-core/"
   },
-  "bugs": {
-    "url": ""
-  },
-  "private": true,
+  "private": false,
   "dependencies": {
     "@tensorflow-models/pose-detection": "^2.1.3",
     "@tensorflow/tfjs": "^4.22.0",

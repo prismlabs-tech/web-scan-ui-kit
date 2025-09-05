@@ -6,6 +6,7 @@ import {
   PRISM_CSS_CLASSNAME,
   PRISM_SESSION_VIEW,
 } from "../../constants";
+import { dispatchStateChange } from "../../dispatch";
 import { PrismSessionView } from "../prism-session-view/PrismSessionView";
 
 export function findAndRenderPrismButton() {
@@ -55,6 +56,7 @@ function prismButtonHandler() {
   const root = createRoot(modalContainer);
   root.render(
     React.createElement(PrismSessionView, {
+      onSessionStateChange: dispatchStateChange,
       onClose: () => {
         root.unmount();
         // Remove the modal container from the DOM when closed

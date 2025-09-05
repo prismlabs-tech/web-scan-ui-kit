@@ -17,6 +17,7 @@ import ProcessingScreen from "../processing/ProcessingScreen";
 import RecordingScreen from "../recording/RecordingScreen";
 
 interface PrismSessionViewProps {
+  onSessionStateChange?: (state: PrismSessionState) => void;
   onClose: () => void;
 }
 
@@ -26,7 +27,10 @@ function getIsPortraitMobile() {
   );
 }
 
-export function PrismSessionView({ onClose }: PrismSessionViewProps) {
+export function PrismSessionView({
+  onSessionStateChange,
+  onClose,
+}: PrismSessionViewProps) {
   const { t } = useTranslation();
   const [isPortraitMobile, setIsPortraitMobile] = useState(
     getIsPortraitMobile()
@@ -55,6 +59,12 @@ export function PrismSessionView({ onClose }: PrismSessionViewProps) {
       prismSession.continue();
     }
   }, [isVideoReady, isSessionInitialized]);
+
+  useEffect(() => {
+    if (onSessionStateChange) {
+      onSessionStateChange(sessionState);
+    }
+  }, [sessionState, onSessionStateChange]);
 
   useEffect(() => {
     const handleResize = () => setIsPortraitMobile(getIsPortraitMobile());

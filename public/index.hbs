@@ -1,0 +1,94 @@
+<html lang='en' translate='no'>
+  <head>
+    <meta charset='utf-8' />
+    <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no' />
+    <link rel='manifest' href='./manifest.json' />
+    <link rel='shortcut icon' href='./images/favicon.ico' />
+
+    <title>Prism SDK - DEV</title>
+
+    {{! css taken from external sites to test styles }}
+    {{!-- <link rel="stylesheet" href="{{htmlWebpackPlugin.options.publicUrl}}/test.css"> --}}
+
+    <style>
+      html,
+      body {
+        background-color: #ffffff;
+      }
+      body {
+        padding-bottom: 10rem; /* Leaving space at bottom of inline reviews UI */
+      }
+      .placement {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1000;
+      }
+      .prism-sdk-button {
+        padding: 8px 16px;
+        border-radius: 4px;
+        border: none;
+        background-color: #007bff;
+        color: white;
+        cursor: pointer;
+        font-size: 14px;
+        transition: background-color 0.2s;
+      }
+      .prism-sdk-button:hover {
+        background-color: #0056b3;
+      }
+      .prism-sdk-button:focus {
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+      }
+    </style>
+
+    <script>
+      window.addEventListener('onPrismLoaded', function (event) { event.detail.prism.render({}) });
+      window.addEventListener('onPrismScanComplete', function (event) {
+        console.log('Prism scan completed:', event.detail)
+        if (event.detail.blob) {
+            const blob = event.detail.blob;
+            const url = URL.createObjectURL(blob);
+            console.log('Blob URL:', url);
+            
+            // Create download link
+            const previousLink = document.querySelector('a[download="prism-scan.webm"]');
+            const link = previousLink ?? document.createElement('a');
+            if (!previousLink) {
+                link.download = 'prism-scan.webm';
+                link.textContent = 'Download Prism Scan';
+                document.body.appendChild(link);
+            }
+            link.href = url;
+            
+            // Create video element
+            const previousVideo = document.querySelector('video');
+            const video = previousVideo ?? document.createElement('video');
+            if (!previousVideo) {
+             video.controls = true;
+             video.autoplay = true;
+             video.style.display = 'block';
+             video.style.maxHeight = '360px';
+             video.style.marginTop = '20px';
+             document.body.appendChild(video);
+            }
+            video.src = url;
+        }
+      });
+      window.addEventListener('onPrismStateChange', function (event) { console.log('Prism state changed:', event.detail) });
+    </script>
+
+    <script type='text/javascript' async src='./default/prism.js'></script>
+
+  </head>
+
+  <body>
+    <div id='root'>
+      <div class='placement'>
+        <button class='prism-button prism-sdk-button'>Prism</button>
+      </div>
+    </div>
+  </body>
+</html>

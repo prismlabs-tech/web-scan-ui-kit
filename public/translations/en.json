@@ -1,0 +1,100 @@
+{
+  "detectionError": {
+    "text": {
+      "notInFrame": "No Body Detected",
+      "incompleteData": "Center",
+      "multiplePoses": "One Person",
+      "moveRight": "Right",
+      "moveLeft": "Left",
+      "moveBack": "Away",
+      "moveClose": "Closer",
+      "occludedFeet": "Move device",
+      "faceForward": "Face camera",
+      "cameraTooHigh": "Lower Device",
+      "cameraTooLow": "Raise Device",
+      "emptySpaceTop": "Lower Device",
+      "emptySpaceBottom": "Raise Device",
+      "notUpright": "Stand upright",
+      "badLegPose": "Spread feet",
+      "badArmPose": "Extend arms",
+      "rightArmRaised": "Extend arms",
+      "leftArmRaised": "Extend arms",
+      "rightArmTooHigh": "Lower right arm",
+      "leftArmTooHigh": "Lower left arm",
+      "rightArmTooLow": "Raise right arm",
+      "leftArmTooLow": "Raise left arm",
+      "badArmAlignment": "Extend arms"
+    },
+    "voice": {
+      "notInFrame": "Position yourself in front of the camera",
+      "incompleteData": "Your entire body should be in view",
+      "multiplePoses": "One person only",
+      "moveRight": "Move to the right",
+      "moveLeft": "Move to the left",
+      "moveBack": "Move away",
+      "moveClose": "Move closer",
+      "occludedFeet": "Move the device so that your feet are in view.",
+      "faceForward": "Turn to face the camera",
+      "cameraTooHigh": "Try lowering your device to waist high",
+      "cameraTooLow": "Try raising your device to waist high",
+      "emptySpaceTop": "Try lowering your device to waist high",
+      "emptySpaceBottom": "Try raising your device to waist high",
+      "notUpright": "Stand upright",
+      "badLegPose": "Spread your feet shoulder width apart",
+      "badArmPose": "Extend your arms out by your side and make a fist",
+      "rightArmRaised": "Extend your arms out by your side and make a fist",
+      "leftArmRaised": "Extend your arms out by your side and make a fist",
+      "rightArmTooHigh": "Lower right arm slowly",
+      "leftArmTooHigh": "Lower left arm slowly",
+      "rightArmTooLow": "Raise right arm slowly",
+      "leftArmTooLow": "Raise left arm slowly",
+      "badArmAlignment": "Extend your arms out by your side and make a fist"
+    }
+  },
+  "leveling": {
+    "title": "Device Placement",
+    "description": "Position your device waist high and use the next screen to level it.",
+    "button": "Level Device",
+    "level": {
+      "level": "Level",
+      "backwards": "Tilt your device towards you",
+      "forwards": "Tilt your device away",
+      "unknownLevel": "Tilt your device"
+    }
+  },
+  "positioning": {
+    "title": "Get In Position",
+    "text": {
+      "completeMessage": "Please remain in this spot for the remainder of the body mapping session."
+    },
+    "voice": {
+      "prepare": "Stand in front of your phone so that your entire body is viewable.",
+      "complete": "Remain in this spot for the remainder of the body mapping session.",
+      "completeMessage": "Remain in this spot for the remainder of the body mapping session."
+    }
+  },
+  "posing": {
+    "title": "Pose",
+    "voice": {
+      "prepare": "Make a pose with your feet shoulder width apart and your arms extended out to your side. Make a Fist."
+    }
+  },
+  "recording": {
+    "title": "Scan",
+    "text": {
+      "ready": "Ready",
+      "spin": "Spin"
+    },
+    "voice": {
+      "prepare": "Prepare to make a full turn and wait for count down.",
+      "ready": "Ready",
+      "spin": "Spin",
+      "finished": "Finished"
+    }
+  },
+  "finished": {
+    "title": "Scan Complete!",
+    "description": "Your scan has been successfully captured.",
+    "viewResults": "View Results"
+  }
+}

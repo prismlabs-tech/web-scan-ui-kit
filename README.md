@@ -1,29 +1,56 @@
-# README #
+# Getting Started with Prism Web SDK
 
-This README would normally document whatever steps are necessary to get your application up and running.
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-### What is this repository for? ###
+## Available Scripts
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+In the project directory, you can run:
 
-### How do I get set up? ###
+### `npm run dev`
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-### Contribution guidelines ###
+The page will reload if you make edits.\
+You will also see any lint errors in the console.
 
-* Writing tests
-* Code review
-* Other guidelines
+### `npm test`
 
-### Who do I talk to? ###
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-* Repo owner or admin
-* Other community or team contact
+### `npm run build`
+
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
+
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
+
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+
+## Translation Override Example
+
+We support overriding custom strings for a specific language. Here is an example of how this can be achived.
+
+
+```html
+window.addEventListener('onPrismLoaded', async function (event) {
+    await event.detail.prism.render({
+        localization: {
+        language: 'en',
+        fallbackLanguage: 'en',
+        resources: {
+            en: {
+                translation: {
+                    leveling: {
+                        title: 'New title (override)'
+                    }
+                }
+            }
+        },
+        merge: true
+        }
+    })
+});
+```

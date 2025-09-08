@@ -1,31 +1,28 @@
-# Getting Started with Prism Web SDK
+# Prism Web Scan UI Kit
 
-## Available Scripts
+## Documentation
 
-In the project directory, you can run:
+Full documentation for this package can be viewed here: [Link TBD]
 
-### `npm run dev`
+# Prism Web Scan UI Kit
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+This package provides all the UI components and logic needed for capturing a scan using the Prism Web Scanning SDK. It is intended to be consumed as a library in your own web application, not run directly.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Installation
 
-### `npm test`
+Install the package using npm:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```sh
+npm install @prismlabs/web-scan-ui-kit
+```
 
-### `npm run build:dev` or `npm run build:cdn:dev`
+or with yarn:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```sh
+yarn add @prismlabs/web-scan-ui-kit
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+> **Note:** This package's primary function is to provide all the UI for capturing a scan. It is not intended to be run directly by end users.
 
 ## Translation Override Example
 

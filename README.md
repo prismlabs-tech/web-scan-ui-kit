@@ -2,7 +2,7 @@
 
 ## Documentation
 
-Full documentation for this package can be viewed here: [Link TBD]
+Full documentation for this package can be viewed here: [documentation/](./documentation/)
 
 # Prism Web Scan UI Kit
 

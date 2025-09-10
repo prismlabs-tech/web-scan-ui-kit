@@ -26,7 +26,7 @@
   "license": "Apache-CLA",
   "repository": {
     "type": "git",
-    "url": "https://bitbucket.org/nakedlabs/web-scan-core/"
+    "url": "https://github.com/prismlabs-tech/web-scan-ui-kit.git"
   },
   "private": false,
   "dependencies": {
@@ -40,7 +40,7 @@
     "rxjs": "^7.8.2",
     "styled-components": "^6.1.18",
     "web-vitals": "^2.1.4",
-    "@prismlabs/web-scan-core": "git+https://bitbucket.org/nakedlabs/web-scan-core.git"
+    "@prismlabs/web-scan-core": "^0.0.5"
   },
   "devDependencies": {
     "@babel/core": "^7.27.4",

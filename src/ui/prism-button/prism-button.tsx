@@ -32,7 +32,23 @@ export function findAndRenderPrismButton() {
   });
 }
 
+// Injects the overscroll-behavior style if not already present
+function injectPrismModalStyle() {
+  if (document.getElementById("prism-modal-style")) return;
+  const style = document.createElement("style");
+  style.id = "prism-modal-style";
+  style.textContent = `
+    .prism-modal-open, .prism-modal-open body {
+      overscroll-behavior: none !important;
+    }
+  `;
+  document.head.appendChild(style);
+}
+
 function prismButtonHandler() {
+  // Inject overscroll prevention style and add class
+  injectPrismModalStyle();
+  document.documentElement.classList.add("prism-modal-open");
   // In order to get the Speech Synthesizer to work properly, we need to ensure
   // that the user has interacted with the page first. This is a requirement
   const speech = new SpeechSynthesizer();
@@ -59,6 +75,8 @@ function prismButtonHandler() {
       onSessionStateChange: dispatchStateChange,
       onClose: () => {
         root.unmount();
+        // Remove overscroll prevention class
+        document.documentElement.classList.remove("prism-modal-open");
         // Remove the modal container from the DOM when closed
         if (modalContainer && modalContainer.parentNode) {
           modalContainer.parentNode.removeChild(modalContainer);

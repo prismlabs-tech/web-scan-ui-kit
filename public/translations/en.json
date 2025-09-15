@@ -51,6 +51,11 @@
       "badArmAlignment": "Extend your arms out by your side and make a fist"
     }
   },
+  "cameraError": {
+    "title": "Camera Error",
+    "description": "We were unable to access your camera. Please check your device settings and ensure that camera permissions are enabled for this application.",
+    "button": "Close"
+  },
   "leveling": {
     "title": "Device Placement",
     "description": "Position your device waist high and use the next screen to level it.",

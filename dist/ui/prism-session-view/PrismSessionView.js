@@ -42,6 +42,8 @@ import { useTranslation } from "react-i18next";
 import { dispatchScanComplete } from "../../dispatch";
 import '../../i18n/i18n.js';
 import CameraFeed from '../camera/CameraFeed.js';
+import { AlertContainer } from "../components";
+import Banner from '../components/Banner.js';
 import LevelScreen from '../level/LevelScreen.js';
 import Modal, { ModalContentContainer } from '../modal/Modal.js';
 import PosingScreen from '../posing/PosingScreen.js';
@@ -53,7 +55,7 @@ function getIsPortraitMobile() {
 }
 export function PrismSessionView(_a) {
     var _this = this;
-    var onClose = _a.onClose;
+    var onSessionStateChange = _a.onSessionStateChange, onClose = _a.onClose;
     var t = useTranslation().t;
     var _b = useState(getIsPortraitMobile()), isPortraitMobile = _b[0], setIsPortraitMobile = _b[1];
     var _c = useState(false), isSessionInitialized = _c[0], setIsSessionInitialized = _c[1];
@@ -66,6 +68,7 @@ export function PrismSessionView(_a) {
         var captureSession = new CaptureSession();
         return new PrismSession(captureSession);
     })[0];
+    var _j = useState(false), cameraPermissionDenied = _j[0], setCameraPermissionDenied = _j[1];
     useEffect(function () {
         if (!isVideoReady || !isSessionInitialized) {
             return;
@@ -74,6 +77,11 @@ export function PrismSessionView(_a) {
             prismSession.continue();
         }
     }, [isVideoReady, isSessionInitialized]);
+    useEffect(function () {
+        if (onSessionStateChange) {
+            onSessionStateChange(sessionState);
+        }
+    }, [sessionState, onSessionStateChange]);
     useEffect(function () {
         var handleResize = function () { return setIsPortraitMobile(getIsPortraitMobile()); };
         window.addEventListener("resize", handleResize);
@@ -96,6 +104,13 @@ export function PrismSessionView(_a) {
             .finally(function () {
             setHasCameraPermission(prismSession.captureSession.cameraManager.isPermissionGranted);
         });
+        // Listen for camera permission changes
+        prismSession.captureSession.cameraManager.onPermissionChange = function (state) {
+            console.log("Camera permission state changed:", state);
+            var granted = state === "granted";
+            setHasCameraPermission(granted);
+            setCameraPermissionDenied(!granted); // non-blocking UI instead of alert
+        };
         var recordingSubscription = prismSession.captureSession.recorder.recording$.subscribe(function (blob) {
             setScanBlob(blob);
         });
@@ -174,5 +189,5 @@ export function PrismSessionView(_a) {
                                         cursor: "pointer",
                                         fontSize: "16px",
                                         marginTop: "20px",
-                                    }, children: t("prism.finished.viewResults") })] }))] }))] }) }));
+                                    }, children: t("prism.finished.viewResults") })] })), cameraPermissionDenied && (_jsx(AlertContainer, { children: _jsx(Banner, { title: t("cameraError.title"), bottomTitle: t("cameraError.description"), buttonText: t("cameraError.button"), onButtonClick: onClose }) }))] }))] }) }));
 }

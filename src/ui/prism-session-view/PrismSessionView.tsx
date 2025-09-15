@@ -1,4 +1,5 @@
 import {
+  CameraPermissionState,
   CaptureSession,
   PrismSession,
   PrismSessionState,
@@ -9,6 +10,8 @@ import { useTranslation } from "react-i18next";
 import { dispatchScanComplete } from "../../dispatch";
 import "../../i18n/i18n";
 import CameraFeed from "../camera/CameraFeed";
+import { AlertContainer } from "../components";
+import Banner from "../components/Banner";
 import LevelScreen from "../level/LevelScreen";
 import Modal, { ModalContentContainer } from "../modal/Modal";
 import PosingScreen from "../posing/PosingScreen";
@@ -49,6 +52,7 @@ export function PrismSessionView({
     const captureSession = new CaptureSession();
     return new PrismSession(captureSession);
   });
+  const [cameraPermissionDenied, setCameraPermissionDenied] = useState(false);
 
   useEffect(() => {
     if (!isVideoReady || !isSessionInitialized) {
@@ -92,6 +96,15 @@ export function PrismSessionView({
           prismSession.captureSession.cameraManager.isPermissionGranted
         );
       });
+
+    // Listen for camera permission changes
+    prismSession.captureSession.cameraManager.onPermissionChange = (
+      state: CameraPermissionState
+    ) => {
+      const granted = state === "granted";
+      setHasCameraPermission(granted);
+      setCameraPermissionDenied(!granted); // non-blocking UI instead of alert
+    };
 
     const recordingSubscription =
       prismSession.captureSession.recorder.recording$.subscribe((blob) => {
@@ -233,6 +246,19 @@ export function PrismSessionView({
                   {t("prism.finished.viewResults")}
                 </button>
               </div>
+            )}
+            {cameraPermissionDenied && (
+              <AlertContainer>
+                <Banner
+                  title={t("cameraError.title")}
+                  bottomTitle={t("cameraError.description")}
+                  buttonText={t("cameraError.button")}
+                  onButtonClick={() => {
+                    setCameraPermissionDenied(false);
+                    onClose();
+                  }}
+                />
+              </AlertContainer>
             )}
           </div>
         )}

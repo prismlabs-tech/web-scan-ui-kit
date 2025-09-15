@@ -1,6 +1,6 @@
-import { type PrismEventMap } from '../dispatch/EventBus';
-import { PRISM_LOADED_EVENT, PRISM_SCAN_COMPLETE_EVENT, PRISM_STATE_CHANGE_EVENT } from '../dispatch/EventNames';
-import type { PrismConfig, PrismInstance } from '../widgetConfig';
+import { type PrismEventMap } from "../dispatch/EventBus";
+import { PRISM_LOADED_EVENT, PRISM_SCAN_COMPLETE_EVENT, PRISM_STATE_CHANGE_EVENT } from "../dispatch/EventNames";
+import type { PrismConfig, PrismInstance } from "../widgetConfig";
 type Unsubscribe = () => void;
 /**
  * Programmatic scanner with constructor config, no window events.

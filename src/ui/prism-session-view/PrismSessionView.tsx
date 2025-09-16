@@ -12,6 +12,7 @@ import "../../i18n/i18n";
 import CameraFeed from "../camera/CameraFeed";
 import { AlertContainer } from "../components";
 import Banner from "../components/Banner";
+import ScreenContainer from "../components/ScreenContainer";
 import LevelScreen from "../level/LevelScreen";
 import Modal, { ModalContentContainer } from "../modal/Modal";
 import PosingScreen from "../posing/PosingScreen";
@@ -35,14 +36,14 @@ export function PrismSessionView({
   onClose,
 }: PrismSessionViewProps) {
   const { t } = useTranslation();
+  const isFirefox =
+    typeof navigator !== "undefined" &&
+    /firefox|fxios/i.test(navigator.userAgent);
   const [isPortraitMobile, setIsPortraitMobile] = useState(
     getIsPortraitMobile()
   );
   const [isSessionInitialized, setIsSessionInitialized] = useState(false);
   const [isVideoReady, setIsVideoReady] = useState(false);
-  const [hasCameraPermission, setHasCameraPermission] = useState<
-    boolean | null
-  >(null);
   const [cameraError, setCameraError] = useState<Error | undefined>();
   const [scanBlob, setScanBlob] = useState<Blob | undefined>();
   const [sessionState, setSessionState] = useState<PrismSessionState>(
@@ -52,7 +53,27 @@ export function PrismSessionView({
     const captureSession = new CaptureSession();
     return new PrismSession(captureSession);
   });
-  const [cameraPermissionDenied, setCameraPermissionDenied] = useState(false);
+  const [hasCameraPermission, setHasCameraPermission] = useState<
+    boolean | null
+  >(null);
+
+  function handleFirefoxPermissionIssues(error: any) {
+    const err = error as any;
+    const name = err?.name || "";
+    const message = (err?.message || "").toLowerCase();
+
+    // Detect permission-denied patterns across browsers (including Firefox)
+    const isPermissionDenied =
+      name === "NotAllowedError" ||
+      name === "SecurityError" ||
+      message.includes("not allowed") ||
+      message.includes("permission") ||
+      message.includes("denied");
+
+    if (isPermissionDenied) {
+      setHasCameraPermission(false);
+    }
+  }
 
   useEffect(() => {
     if (!isVideoReady || !isSessionInitialized) {
@@ -88,22 +109,24 @@ export function PrismSessionView({
         setIsSessionInitialized(true);
       })
       .catch((error) => {
+        handleFirefoxPermissionIssues(error);
         setCameraError(error);
         console.error("Error starting Prism session:", error);
       })
       .finally(() => {
-        setHasCameraPermission(
-          prismSession.captureSession.cameraManager.isPermissionGranted
-        );
+        const granted =
+          prismSession.captureSession.cameraManager.isPermissionGranted;
+        if (granted === true) {
+          setHasCameraPermission(true);
+        }
       });
 
     // Listen for camera permission changes
     prismSession.captureSession.cameraManager.onPermissionChange = (
       state: CameraPermissionState
     ) => {
-      const granted = state === "granted";
-      setHasCameraPermission(granted);
-      setCameraPermissionDenied(!granted); // non-blocking UI instead of alert
+      if (state === CameraPermissionState.Unknown) return;
+      setHasCameraPermission(state !== CameraPermissionState.Denied);
     };
 
     const recordingSubscription =
@@ -127,7 +150,12 @@ export function PrismSessionView({
     try {
       await prismSession.captureSession.cameraManager.startVideoPlayback(video);
       setIsVideoReady(true);
+
+      // THIS IS A FIREFOX FIX \\
+      // If playback started successfully, permission is effectively granted (helps Firefox)
+      setHasCameraPermission(true);
     } catch (error) {
+      handleFirefoxPermissionIssues(error);
       setCameraError(error as Error);
       console.error("Camera error:", error);
     }
@@ -247,18 +275,20 @@ export function PrismSessionView({
                 </button>
               </div>
             )}
-            {cameraPermissionDenied && (
-              <AlertContainer>
-                <Banner
-                  title={t("cameraError.title")}
-                  bottomTitle={t("cameraError.description")}
-                  buttonText={t("cameraError.button")}
-                  onButtonClick={() => {
-                    setCameraPermissionDenied(false);
-                    onClose();
-                  }}
-                />
-              </AlertContainer>
+            {hasCameraPermission === false && !isFirefox && (
+              <ScreenContainer>
+                <AlertContainer>
+                  <Banner
+                    title={t("cameraError.title")}
+                    bottomTitle={t("cameraError.description")}
+                    buttonText={t("cameraError.button")}
+                    onButtonClick={() => {
+                      setHasCameraPermission(null);
+                      onClose();
+                    }}
+                  />
+                </AlertContainer>
+              </ScreenContainer>
             )}
           </div>
         )}

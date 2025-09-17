@@ -40,8 +40,8 @@ const staticAssetPlugins = [
   new CopyWebPackPlugin({
     patterns: [
       //   { from: 'public/font', to: 'font' },
-      { from: 'public/images', to: 'images' },
-      { from: 'public/translations', to: 'translations' },
+      { from: 'public/images', to: 'images', globOptions: { ignore: ['**/.DS_Store'] } },
+      { from: 'public/translations', to: 'translations', globOptions: { ignore: ['**/.DS_Store'] } },
       isDev && { from: 'public/manifest.json', to: '' },
     ].filter(Boolean),
   }),
@@ -183,6 +183,14 @@ module.exports = {
     server: {
       type: 'https',
     },
+  },
+  // Suppress performance warnings for single-bundle CDN builds
+  performance: {
+    hints: false,
+    // Keep generous caps in case hints are enabled in the future
+    maxEntrypointSize: 3 * 1024 * 1024,
+    maxAssetSize: 3 * 1024 * 1024,
+    assetFilter: (filename) => !/\.map$/.test(filename),
   },
   watchOptions: { ignored: ['/src/tailwind.css'] },
   optimization:

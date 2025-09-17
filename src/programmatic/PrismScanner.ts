@@ -6,6 +6,7 @@ import {
   PRISM_STATE_CHANGE_EVENT,
 } from "../dispatch/EventNames";
 import { applyCustomI18n } from "../i18n/applyCustomI18n";
+import { setRuntimeLanguage } from "../shared/runtimeConfig";
 import { presentPrismModal } from "../ui/prism-button/prism-button";
 import type { PrismConfig, PrismInstance } from "../widgetConfig";
 
@@ -27,6 +28,7 @@ export class PrismScanner implements PrismInstance {
   async render(config: PrismConfig) {
     if (config?.localization) {
       await applyCustomI18n(config.localization);
+      setRuntimeLanguage(config.localization.language);
     }
     if (config?.assets) {
       applyCustomAssets(config.assets);

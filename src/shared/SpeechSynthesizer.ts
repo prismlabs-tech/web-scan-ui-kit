@@ -31,15 +31,26 @@ export class SpeechSynthesizer {
    * Create a SpeechSynthesizer with an optional preferred BCP 47 language tag.
    * If not provided, language is auto-detected from the browser locale.
    *
-   * @param lang - Optional language code (e.g., 'en-US', 'en-GB', 'de-DE'). Defaults to browser locale.
    * @throws Error if the Speech Synthesis API is not supported by the browser.
    */
-  constructor(lang?: string) {
+  constructor() {
+    // Prefer explicitly configured language from PrismConfig, else browser locale
+    let configured: string | undefined;
+    try {
+      // Lazy import to avoid circular deps at module init
+      const { getRuntimeLanguage } = require("./runtimeConfig") as {
+        getRuntimeLanguage: () => string | undefined;
+      };
+      configured = getRuntimeLanguage();
+    } catch {
+      // ignore if module not available; default to browser locale
+    }
+
     const autoLang =
       typeof navigator !== "undefined"
         ? navigator.languages?.[0] || navigator.language || "en-US"
         : "en-US";
-    this.language = lang ?? autoLang;
+    this.language = configured ?? autoLang;
     if (!("speechSynthesis" in window)) {
       throw new Error("Speech Synthesis API is not supported in this browser.");
     }

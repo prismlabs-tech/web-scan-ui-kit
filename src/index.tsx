@@ -2,6 +2,7 @@ import { applyCustomAssets } from "./assets/assetRegistry";
 import { dispatchPrismLoaded } from "./dispatch";
 import { applyCustomI18n } from "./i18n/applyCustomI18n";
 import "./i18n/i18n";
+import { setRuntimeLanguage } from "./shared/runtimeConfig";
 import { findAndRenderPrismButton } from "./ui/prism-button/prism-button";
 import "./ui/theme/theme.css";
 import { PrismConfig, PrismInstance } from "./widgetConfig";
@@ -10,6 +11,8 @@ const Prism: PrismInstance = {
   render: async (config: PrismConfig) => {
     if (config?.localization) {
       await applyCustomI18n(config.localization);
+      // Persist the preferred language for non-i18n consumers (e.g., SpeechSynthesizer)
+      setRuntimeLanguage(config.localization.language);
     }
     if (config?.assets) {
       applyCustomAssets(config.assets);

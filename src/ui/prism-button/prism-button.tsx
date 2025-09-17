@@ -1,4 +1,3 @@
-import { SpeechSynthesizer } from "@prismlabs/web-scan-core";
 import React from "react";
 import { createRoot } from "react-dom/client";
 import {
@@ -7,6 +6,7 @@ import {
   PRISM_SESSION_VIEW,
 } from "../../constants";
 import { dispatchStateChange } from "../../dispatch";
+import { SpeechSynthesizer } from "../../shared/SpeechSynthesizer";
 import { PrismSessionView } from "../prism-session-view/PrismSessionView";
 
 export function findAndRenderPrismButton() {

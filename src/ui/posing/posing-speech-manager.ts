@@ -1,7 +1,7 @@
-import { SpeechSynthesizer } from "@prismlabs/web-scan-core";
 import { TFunction } from "i18next";
 import { Subscription } from "rxjs";
 import { getDetectionFeedbackVoiceLocalization } from "../../localization/detection-feedback-localization";
+import { SpeechSynthesizer } from "../../shared/SpeechSynthesizer";
 import {
   PosingState,
   PosingStateDistributor,
@@ -16,7 +16,7 @@ export class PosingSpeechError extends Error {
 }
 
 export class PosingSpeechManager {
-  private speechSynthesizer: SpeechSynthesizer = new SpeechSynthesizer("en-US");
+  private speechSynthesizer: SpeechSynthesizer = new SpeechSynthesizer();
   private posingStateDistributor: PosingStateDistributor;
   private subscription: Subscription | null = null;
   private localization: TFunction<"translation", undefined>;

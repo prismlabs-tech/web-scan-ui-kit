@@ -1,6 +1,6 @@
-import { SpeechSynthesizer } from "@prismlabs/web-scan-core";
 import { TFunction } from "i18next";
 import { Subscription } from "rxjs";
+import { SpeechSynthesizer } from "../../shared/SpeechSynthesizer";
 import {
   RecordingState,
   RecordingStateDistributor,
@@ -15,7 +15,7 @@ export class RecordingSpeechError extends Error {
 }
 
 export class RecordingSpeechManager {
-  private speechSynthesizer: SpeechSynthesizer = new SpeechSynthesizer("en-US");
+  private speechSynthesizer: SpeechSynthesizer = new SpeechSynthesizer();
   private recordingStateDistributor: RecordingStateDistributor;
   private subscription: Subscription | null = null;
   private localization: TFunction<"translation", undefined>;

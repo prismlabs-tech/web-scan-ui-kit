@@ -1,0 +1,96 @@
+version: 2.1
+
+commands:
+  get_aws_credentials:
+    description: get current credentials from Secrets Manager
+    steps:
+      - run:
+          name: get AWS credentials
+          command: |
+            access_key_id=$(aws secretsmanager get-secret-value \
+              --secret-id $AWS_SECRET_ID_PRISM_S3_POWER_USER  \
+              --region $AWS_ECR_REGION \
+              | jq '.SecretString | fromjson' | jq -r '.AWS_ACCESS_KEY_ID')
+            if [ $? -ne 0 ]; then
+              exit 1
+            fi
+            secret_access_key=$(aws secretsmanager get-secret-value \
+              --secret-id $AWS_SECRET_ID_PRISM_S3_POWER_USER  \
+              --region $AWS_ECR_REGION \
+              | jq '.SecretString | fromjson' | jq -r '.AWS_SECRET_ACCESS_KEY')
+            if [ $? -ne 0 ]; then
+              exit 1
+            fi
+            echo "export AWS_ACCESS_KEY_ID=${access_key_id}" >> $BASH_ENV
+            echo "export AWS_SECRET_ACCESS_KEY=${secret_access_key}" >> $BASH_ENV
+
+jobs:
+  website_build:
+    working_directory: /build
+    docker:
+      - image: node:22.18
+        auth:
+          username: $DOCKERHUB_USER
+          password: $DOCKERHUB_PASSWORD
+    steps:
+      - checkout
+      - run:
+          name: install webpack
+          command: npm install -g webpack webpack-cli
+      - run:
+          name: build the app
+          command: ./build.sh
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+  website_copy:
+    working_directory: /build
+    docker:
+      - image: amazon/aws-cli
+        auth:
+          username: $DOCKERHUB_USER
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          CF_DISTRIBUTION_ID_DEV: E3L3YQDMGKIM28
+          CF_DISTRIBUTION_ID_STAGE: E3J1L7EYSAPYC6
+          CF_DISTRIBUTION_ID_PROD: E3VH2AJQN9KO4X
+          S3_PREFIX: prism-web-scanning-sdk
+    steps:
+      - run:
+          name: install aux utilities
+          command: |
+            yum install -y tar gzip jq
+      - attach_workspace:
+          at: .
+      - get_aws_credentials
+      - run:
+          name: sync website to s3
+          command: |
+            ./sync_site.sh
+
+workflows:
+  build:
+    jobs:
+      - website_build:
+          context: BUILD_APT_PACKAGE
+          filters:
+            branches:
+              only:
+                - main
+            tags:
+              only:
+                - /^v(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)-[rc](?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$/
+                - /^v(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/
+      - website_copy:
+          context: BUILD_APT_PACKAGE
+          requires:
+            - website_build
+          filters:
+            branches:
+              only:
+                - main
+            tags:
+              only:
+                - /^v(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)-[rc](?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$/
+                - /^v(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/

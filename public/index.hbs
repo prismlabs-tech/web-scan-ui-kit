@@ -58,7 +58,7 @@
             const link = previousLink ?? document.createElement('a');
             if (!previousLink) {
                 link.download = 'prism-scan.webm';
-                link.textContent = 'Download Prism Scan';
+                link.textContent = 'Download Prism Scan (' + (blob.size / (1024 * 1024)).toFixed(1) + ' MB)';
                 document.body.appendChild(link);
             }
             link.href = url;

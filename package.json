@@ -1,6 +1,6 @@
 {
   "name": "@prismlabs/web-ui-kit",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Core functionality for the Prism web scanning SDK",
   "homepage": "https://prismlabs.tech",
   "main": "dist/index.js",
@@ -40,7 +40,7 @@
     "rxjs": "^7.8.2",
     "styled-components": "^6.1.18",
     "web-vitals": "^2.1.4",
-    "@prismlabs/web-scan-core": "^0.0.15"
+    "@prismlabs/web-scan-core": "^0.0.17"
   },
   "devDependencies": {
     "@babel/core": "^7.27.4",

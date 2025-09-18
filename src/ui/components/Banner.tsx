@@ -1,21 +1,21 @@
-import React from 'react'
-import styled from 'styled-components'
-import ActionButton from './ActionButton'
+import React from "react";
+import styled from "styled-components";
+import ActionButton from "./ActionButton";
 
 export enum BannerType {
-  TOP = 'top',
-  CENTER = 'center',
+  TOP = "top",
+  CENTER = "center",
 }
 
 interface BannerProps {
-  title: string
-  centerComponent?: React.ReactNode
-  bottomTitle?: string
-  buttonText?: string
-  onButtonClick?: () => void
-  type?: BannerType
-  style?: React.CSSProperties
-  className?: string
+  title: string;
+  centerComponent?: React.ReactNode;
+  bottomTitle?: string;
+  buttonText?: string;
+  onButtonClick?: () => void;
+  type?: BannerType;
+  style?: React.CSSProperties;
+  className?: string;
 }
 
 const BannerContainer = styled.div<{ $type?: BannerType }>`
@@ -23,7 +23,8 @@ const BannerContainer = styled.div<{ $type?: BannerType }>`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: ${({ $type }) => ($type === BannerType.TOP ? 'flex-start' : 'center')};
+  justify-content: ${({ $type }) =>
+    $type === BannerType.TOP ? "flex-start" : "center"};
   border-radius: 20px;
   padding: 32px 32px 24px 32px;
   background: var(--background-color);
@@ -36,7 +37,7 @@ const BannerContainer = styled.div<{ $type?: BannerType }>`
   box-shadow: 0px 0px 32px var(--shadow-color);
 
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
@@ -53,7 +54,7 @@ const BannerContainer = styled.div<{ $type?: BannerType }>`
     pointer-events: none;
     z-index: 1;
   }
-`
+`;
 
 const BannerTitle = styled.div`
   color: var(--text-color);
@@ -64,17 +65,17 @@ const BannerTitle = styled.div`
   text-align: center;
   color: #222;
   margin-bottom: 12px;
-`
+`;
 
 const BannerBottomTitle = styled(BannerTitle)`
-  color: var(--text-color);
+  color: var(--button-text-color);
   font-family: var(--font-family);
   font-size: var(--secondary-title-font-size);
   font-weight: var(--secondary-title-font-weight);
   line-height: var(--secondary-title-line-height);
   margin-bottom: 0;
   margin-top: 24px;
-`
+`;
 
 export const AlertContainer = styled.div`
   position: absolute;
@@ -88,7 +89,7 @@ export const AlertContainer = styled.div`
   width: 100%;
   padding: 16px;
   border-radius: 8px; /* Optional: Add rounded corners */
-`
+`;
 
 export const TopBannerContainer = styled.div`
   position: absolute;
@@ -102,7 +103,7 @@ export const TopBannerContainer = styled.div`
   width: 100%;
   padding: 16px;
   border-radius: 8px; /* Optional: Add rounded corners */
-`
+`;
 
 export const BottomBannerContainer = styled.div`
   position: absolute;
@@ -116,7 +117,7 @@ export const BottomBannerContainer = styled.div`
   width: 100%;
   padding: 16px;
   border-radius: 8px; /* Optional: Add rounded corners */
-`
+`;
 
 const Banner: React.FC<BannerProps> = ({
   title,
@@ -130,14 +131,16 @@ const Banner: React.FC<BannerProps> = ({
 }) => (
   <BannerContainer style={style} className={className} $type={type}>
     <BannerTitle>{title}</BannerTitle>
-    {centerComponent && <div style={{ margin: '16px 0' }}>{centerComponent}</div>}
+    {centerComponent && (
+      <div style={{ margin: "16px 0" }}>{centerComponent}</div>
+    )}
     {bottomTitle && <BannerBottomTitle>{bottomTitle}</BannerBottomTitle>}
     {buttonText && (
-      <div style={{ marginTop: '24px', width: '100%' }}>
+      <div style={{ marginTop: "24px", width: "100%" }}>
         <ActionButton onClick={onButtonClick}>{buttonText}</ActionButton>
       </div>
     )}
   </BannerContainer>
-)
+);
 
-export default Banner
+export default Banner;

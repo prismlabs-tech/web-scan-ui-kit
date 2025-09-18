@@ -15,15 +15,21 @@ Minimal example (host page):
 ```html
 <style>
   .prism-css {
-    --primary-color: #6c9cf8;
-    --success-color: #28c76f;
-    --error-color: #ff4d4f;
-    --background-color: #0f0f12;
-    --title-text-color: #ffffff;
+    --primary-color: #6c9cf8 !important;
+    --success-color: #28c76f !important;
+    --error-color: #ff4d4f !important;
+    --background-color: #0f0f12 !important;
+    --title-text-color: #ffffff !important;
     --font-family:
-      Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    --primary-button-corner-radius: 16px;
-    --outline-gradient: linear-gradient(90deg, #6c9cf8, #35d0ba, #f8d36c);
+      Inter, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial,
+      sans-serif !important;
+    --primary-button-corner-radius: 16px !important;
+    --outline-gradient: linear-gradient(
+      90deg,
+      #6c9cf8,
+      #35d0ba,
+      #f8d36c
+    ) !important;
   }
 </style>
 
@@ -46,6 +52,8 @@ Common variables you may want to override quickly:
 - Pose overlay: `--pose-acceptable-color`, `--pose-unacceptable-color`, `--pose-landmark-color`
 
 _Refer to the `theme.css` for all available properties._
+
+**NOTE:** The `!important` flag may be required in some cases depending on how the modal is presented. This ensures that we force our custom theme on top of the default theme regardless of when the SDK is initialized.
 
 ## Localization
 

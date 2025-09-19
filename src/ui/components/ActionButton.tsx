@@ -1,9 +1,9 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from "react";
+import styled from "styled-components";
 
 interface ButtonProps {
-  onClick?: () => void
-  children: React.ReactNode
+  onClick?: () => void;
+  children: React.ReactNode;
 }
 
 const StyledButton = styled.button`
@@ -12,7 +12,7 @@ const StyledButton = styled.button`
   justify-content: center;
   padding: 12px 24px;
   background-color: var(--primary-color);
-  color: var(--text-color);
+  color: var(--button-text-color);
   font-family: var(--font-family);
   font-size: var(--body-font-size);
   font-weight: bold;
@@ -30,10 +30,10 @@ const StyledButton = styled.button`
     transform: scale(0.95); /* Scale down on click */
     box-shadow: 0px 4px 8px var(--shadow-color);
   }
-`
+`;
 
 const ActionButton: React.FC<ButtonProps> = ({ onClick, children }) => {
-  return <StyledButton onClick={onClick}>{children}</StyledButton>
-}
+  return <StyledButton onClick={onClick}>{children}</StyledButton>;
+};
 
-export default ActionButton
+export default ActionButton;

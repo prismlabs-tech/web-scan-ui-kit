@@ -43,7 +43,9 @@ const BannerContainer = styled.div<{ $type?: BannerType }>`
     left: 0;
     right: 0;
     bottom: 0;
-    border-radius: 20px; /* Match the container's border radius */
+    border-radius: var(
+      --card-corner-radius
+    ); /* Match the container's border radius */
     padding: 3px; /* Match the border width */
     background: var(--outline-gradient);
     -webkit-mask:
@@ -57,18 +59,17 @@ const BannerContainer = styled.div<{ $type?: BannerType }>`
 `;
 
 const BannerTitle = styled.div`
-  color: var(--text-color);
+  color: var(--title-text-color);
   font-family: var(--font-family);
-  font-size: var(--large-title-font-size);
-  font-weight: var(--large-title-font-weight);
-  line-height: var(--large-title-line-height);
+  font-size: var(--title-font-size);
+  font-weight: var(--title-font-weight);
+  line-height: var(--title-line-height);
   text-align: center;
-  color: #222;
   margin-bottom: 12px;
 `;
 
 const BannerBottomTitle = styled(BannerTitle)`
-  color: var(--button-text-color);
+  color: var(--text-color);
   font-family: var(--font-family);
   font-size: var(--secondary-title-font-size);
   font-weight: var(--secondary-title-font-weight);

@@ -15,11 +15,12 @@ import {
 } from "./recording-state-distributor";
 
 export const CountdownText = styled.div`
-  color: white;
-  font-size: 100px;
+  color: var(--secondary-text-color);
+  font-size: var(--large-title-font-size);
   font-family: var(--font-family);
   text-transform: uppercase;
-  font-weight: bold;
+  font-weight: var(--large-title-font-weight);
+  line-height: var(--large-title-line-height);
 `;
 
 interface CountdownProps {

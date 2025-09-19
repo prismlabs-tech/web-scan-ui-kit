@@ -46,14 +46,82 @@ Minimal example (host page):
 
 Common variables you may want to override quickly:
 
-- Colors: `--primary-color`, `--success-color`, `--error-color`, `--border-color`, `--background-color`, `--title-text-color`
-- Fonts: `--font-family`, `--title-font-size`, `--body-font-size`
-- Radii: `--primary-button-corner-radius`, `--card-corner-radius`
-- Pose overlay: `--pose-acceptable-color`, `--pose-unacceptable-color`, `--pose-landmark-color`
+- Colors (actions/feedback/surfaces): `--primary-color`, `--success-color`, `--error-color`, `--background-color`, `--secondary-background-color`, `--shadow-color`, `--border-color`
+- Text colors: `--title-text-color` (large titles), `--text-color` (body), `--disabled-text-color`, `--button-text-color`
+- Icons: `--primary-icon-color` (applies to masked SVG icons like YellowIcon), `--icon-background-color`
+- Radii: `--primary-button-corner-radius`, `--small-button-corner-radius`, `--card-corner-radius`, `--sheet-corner-radius`
+- Typography: `--font-family`, `--large-title-font-size`, `--large-title-font-weight`, `--large-title-line-height`, `--secondary-title-*`, `--body-*`
+- Pose overlay (camera overlays): `--pose-acceptable-color`, `--pose-unacceptable-color`, `--pose-landmark-color`
+- Gradients/accents: `--outline-gradient` (card/border ring gradient)
 
 _Refer to the `theme.css` for all available properties._
 
 **NOTE:** The `!important` flag may be required in some cases depending on how the modal is presented. This ensures that we force our custom theme on top of the default theme regardless of when the SDK is initialized.
+
+### Variable reference (from `theme.css`)
+
+Below is a quick reference of the most relevant variables and what they affect in the UI:
+
+- Action and feedback colors
+  - `--primary-color`: Primary actions (buttons, emphasis)
+  - `--success-color`: Success states and confirmations
+  - `--error-color`: Error banners/messages
+  - `--shadow-color`: Card/banners drop shadows
+  - `--border-color`: Generic borders (currently limited use)
+
+- Surfaces and backgrounds
+  - `--background-color`: Banners/cards background
+  - `--secondary-background-color`: Secondary surfaces
+  - `--overlay-color`: Camera overlay tint
+
+- Icons
+  - `--primary-icon-color`: Foreground color for masked SVG icons (e.g., YellowIcon)
+  - `--icon-background-color`: Round icon badge background
+
+- Text
+  - `--title-text-color`: Color for large titles (e.g., banner/alert titles)
+  - `--text-color`: Default body text
+  - `--disabled-text-color`: Disabled text
+  - `--button-text-color`: Text on buttons
+
+- Radii
+  - `--primary-button-corner-radius`: Primary button rounding
+  - `--small-button-corner-radius`, `--sheet-corner-radius`: Reserved/secondary
+  - `--card-corner-radius`: Cards/banners rounding
+
+- Typography
+  - `--font-family`: Global font stack
+  - `--large-title-font-size`/`-weight`/`-line-height`: Banner/Alert large title style
+  - `--secondary-title-font-size`/`-weight`/`-line-height`: Subtitle under icons
+  - `--body-font-size`/`-weight`/`-line-height`: Body copy
+
+- Accents
+  - `--outline-gradient`: Gradient ring around banners/cards
+
+Tip: All length values accept rem/px; prefer rem for scalable typography. For example, to set large titles to 100px at the default root size, use `6.25rem`.
+
+Example (Typography overrides):
+
+```css
+.prism-css {
+  /* 100px at 16px base */
+  --large-title-font-size: 6.25rem !important;
+  --large-title-font-weight: 800 !important;
+  --large-title-line-height: 1.05 !important;
+
+  --secondary-title-font-size: 1.5rem !important;
+  --body-font-size: 1rem !important;
+}
+```
+
+Example (Icon colors and badge):
+
+```css
+.prism-css {
+  --primary-icon-color: #121111 !important; /* masked SVG foreground */
+  --icon-background-color: #fbda6b !important; /* circular badge behind icon */
+}
+```
 
 ## Localization
 
@@ -115,7 +183,7 @@ Remote JSON example (use absolute URLs; JSON may be flat or namespaced):
 </script>
 ```
 
-Note: Refer to the example `ens.json` for all available translation files.
+Note: Refer to the example `en.json` for all available translation files.
 
 ## Custom Assets (SVG overrides)
 

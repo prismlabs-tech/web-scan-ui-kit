@@ -49,6 +49,7 @@ Common variables you may want to override quickly:
 - Colors (actions/feedback/surfaces): `--primary-color`, `--success-color`, `--error-color`, `--background-color`, `--secondary-background-color`, `--shadow-color`, `--border-color`
 - Text colors: `--title-text-color` (large titles), `--text-color` (body), `--disabled-text-color`, `--button-text-color`
 - Icons: `--primary-icon-color` (applies to masked SVG icons like YellowIcon), `--icon-background-color`
+- Modal close button: `--close-button-background-color`, `--close-button-icon-color`
 - Radii: `--primary-button-corner-radius`, `--small-button-corner-radius`, `--card-corner-radius`, `--sheet-corner-radius`
 - Typography: `--font-family`, `--large-title-font-size`, `--large-title-font-weight`, `--large-title-line-height`, `--secondary-title-*`, `--body-*`
 - Pose overlay (camera overlays): `--pose-acceptable-color`, `--pose-unacceptable-color`, `--pose-landmark-color`
@@ -77,6 +78,10 @@ Below is a quick reference of the most relevant variables and what they affect i
 - Icons
   - `--primary-icon-color`: Foreground color for masked SVG icons (e.g., YellowIcon)
   - `--icon-background-color`: Round icon badge background
+
+- Modal close button
+  - `--close-button-background-color`: Background color of the modal close button
+  - `--close-button-icon-color`: Color of the "X" icon on the close button
 
 - Text
   - `--title-text-color`: Color for large titles (e.g., banner/alert titles)
@@ -120,6 +125,15 @@ Example (Icon colors and badge):
 .prism-css {
   --primary-icon-color: #121111 !important; /* masked SVG foreground */
   --icon-background-color: #fbda6b !important; /* circular badge behind icon */
+}
+```
+
+Example (Modal close button):
+
+```css
+.prism-css {
+  --close-button-background-color: #000000 !important; /* button background */
+  --close-button-icon-color: #ffffff !important; /* "X" icon color */
 }
 ```
 

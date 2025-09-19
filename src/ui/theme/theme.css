@@ -9,6 +9,10 @@
     --overlay-color: rgba(18, 17, 17, 0.5); /* Used for the overlay on top of the camera (i.e. blur) */
     --background-color: #FFFFFF; /* Used for the background of banners */
 
+    /* Modal Close Button */
+    --close-button-background-color: #FFFFFF; /* Background of the modal close button */
+    --close-button-icon-color: #4b5563; /* Color of the "X" icon on the close button */
+
     --pose-acceptable-color: #58B947; /* Green - Used for the pose acceptable state */
     --pose-unacceptable-color: #FFFFFF; /* White - Used for the pose unacceptable state */
     --pose-landmark-color: #FFFFFF; /* White - Used for the pose landmark color */

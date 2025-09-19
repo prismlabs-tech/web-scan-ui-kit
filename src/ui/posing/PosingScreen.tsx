@@ -149,7 +149,7 @@ const PosingScreen: React.FC<PosingScreenProps> = ({ prismSession }) => {
                 }}
               >
                 <img
-                  src={resolveSvg("body_scan_large")}
+                  src={resolveSvg("get_in_a_pose")}
                   alt="Pose Position"
                   style={{ width: "150px", height: "150px" }}
                 />

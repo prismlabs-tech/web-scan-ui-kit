@@ -1,6 +1,6 @@
 {
   "name": "@prismlabs/web-scan-ui-kit",
-  "version": "0.0.7",
+  "version": "0.0.11",
   "description": "Core functionality for the Prism web scanning SDK",
   "homepage": "https://prismlabs.tech",
   "main": "dist/index.js",
@@ -40,7 +40,7 @@
     "rxjs": "^7.8.2",
     "styled-components": "^6.1.18",
     "web-vitals": "^2.1.4",
-    "@prismlabs/web-scan-core": "^0.0.17"
+    "@prismlabs/web-scan-core": "^0.0.19"
   },
   "devDependencies": {
     "@babel/core": "^7.27.4",
@@ -81,10 +81,10 @@
   },
   "scripts": {
     "build": "NODE_ENV='development' webpack",
-    "build:dev": "NODE_ENV='development' DEPLOYMENT_TYPE=module tsc && npm run fix-esm-extensions",
-    "build:local": "NODE_ENV='local' DEPLOYMENT_TYPE=module tsc && npm run fix-esm-extensions",
-    "build:stage": "NODE_ENV='stage' DEPLOYMENT_TYPE=module tsc && npm run fix-esm-extensions",
-    "build:prod": "NODE_ENV='production' DEPLOYMENT_TYPE=module tsc && npm run fix-esm-extensions",
+    "build:dev": "NODE_ENV='development' DEPLOYMENT_TYPE=module npm run gen:i18n && tsc && npm run copy:assets && npm run fix-esm-extensions",
+    "build:local": "NODE_ENV='local' DEPLOYMENT_TYPE=module npm run gen:i18n && tsc && npm run copy:assets && npm run fix-esm-extensions",
+    "build:stage": "NODE_ENV='stage' DEPLOYMENT_TYPE=module npm run gen:i18n && tsc && npm run copy:assets && npm run fix-esm-extensions",
+    "build:prod": "NODE_ENV='production' DEPLOYMENT_TYPE=module npm run gen:i18n && tsc && npm run copy:assets && npm run fix-esm-extensions",
     "build:cdn:dev": "NODE_ENV='development' CDN_ENV=development CDN_URL='https://cdn-dev.prismlabs.tech' DEPLOYMENT_TYPE=cdn SOURCEMAPS=true webpack",
     "build:cdn:local": "NODE_ENV='local' CDN_ENV=local CDN_URL='' DEPLOYMENT_TYPE=cdn SOURCEMAPS=true webpack",
     "build:cdn:stage": "NODE_ENV='stage' CDN_ENV=stage CDN_URL='https://cdn-stage.prismlabs.tech' DEPLOYMENT_TYPE=cdn SOURCEMAPS=true webpack",
@@ -100,7 +100,9 @@
     "stats:prod": "NODE_ENV='production' CDN_ENV=production CDN_URL='https://cdn.prismlabs.tech' DEPLOYMENT_TYPE=cdn webpack --analyze",
     "test": "CDN_ENV=local jest ./src",
     "type-check": "tsc --noEmit",
-    "fix-esm-extensions": "node fix-esm-extensions.cjs"
+    "fix-esm-extensions": "node fix-esm-extensions.cjs",
+    "copy:assets": "node copy-assets.cjs",
+    "gen:i18n": "node generate-i18n.cjs"
   },
   "eslintConfig": {
     "extends": [

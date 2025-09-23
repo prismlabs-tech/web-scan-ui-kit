@@ -1,3 +1,4 @@
+import { getRuntimeLanguage } from "./runtimeConfig";
 /**
  * Lightweight wrapper around the Web Speech Synthesis API.
  *
@@ -35,16 +36,7 @@ export class SpeechSynthesizer {
    */
   constructor() {
     // Prefer explicitly configured language from PrismConfig, else browser locale
-    let configured: string | undefined;
-    try {
-      // Lazy import to avoid circular deps at module init
-      const { getRuntimeLanguage } = require("./runtimeConfig") as {
-        getRuntimeLanguage: () => string | undefined;
-      };
-      configured = getRuntimeLanguage();
-    } catch {
-      // ignore if module not available; default to browser locale
-    }
+    const configured: string | undefined = getRuntimeLanguage();
 
     const autoLang =
       typeof navigator !== "undefined"

@@ -4,11 +4,11 @@ import {
   PrismSession,
   PrismSessionState,
 } from "@prismlabs/web-scan-core";
-import { isMobile } from "@tensorflow/tfjs-core/dist/device_util";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { dispatchScanComplete } from "../../dispatch";
 import "../../i18n/i18n";
+import { isMobile } from "../../utils/mobile";
 import CameraFeed from "../camera/CameraFeed";
 import { AlertContainer } from "../components";
 import Banner from "../components/Banner";

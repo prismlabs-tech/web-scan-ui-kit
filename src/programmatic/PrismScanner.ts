@@ -41,18 +41,21 @@ export class PrismScanner implements PrismInstance {
     // Is this needed? Part of the implementation we are using so it has to be here.
   }
 
+  /** Subscribe to the SDK loaded event. */
   onPrismLoaded(
     handler: (payload: PrismEventMap[typeof PRISM_LOADED_EVENT]) => void
   ): Unsubscribe {
     return prismEventBus.on(PRISM_LOADED_EVENT, handler);
   }
 
+  /** Subscribe to state change events. */
   onPrismStateChange(
     handler: (payload: PrismEventMap[typeof PRISM_STATE_CHANGE_EVENT]) => void
   ): Unsubscribe {
     return prismEventBus.on(PRISM_STATE_CHANGE_EVENT, handler);
   }
 
+  /** Subscribe to scan complete events. */
   onPrismScanComplete(
     handler: (payload: PrismEventMap[typeof PRISM_SCAN_COMPLETE_EVENT]) => void
   ): Unsubscribe {
@@ -60,7 +63,7 @@ export class PrismScanner implements PrismInstance {
   }
 
   /** Programmatically present the Prism modal. */
-  present() {
+  present(): void {
     presentPrismModal();
   }
 }

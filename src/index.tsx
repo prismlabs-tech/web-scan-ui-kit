@@ -36,4 +36,8 @@ async function initializeWidget(config: PrismConfig) {
 
 dispatchPrismLoaded(Prism);
 
-export {};
+// Re-export programmatic API for npm consumers
+export type { PrismAssetConfig } from "./assets/assetRegistry";
+export type { PrismLocalizationConfig } from "./i18n/applyCustomI18n";
+export * from "./programmatic/PrismScanner";
+export type { PrismConfig, PrismInstance } from "./widgetConfig";

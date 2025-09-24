@@ -199,6 +199,60 @@ Remote JSON example (use absolute URLs; JSON may be flat or namespaced):
 
 Note: Refer to the example `en.json` for all available translation files.
 
+Local JSON example (same-origin files, e.g., when using npm):
+
+```html
+<script>
+  // Place your JSON files in your app's public folder, e.g.:
+  //   public/languages/en.json
+  //   public/languages/es.json
+  // Easiest option: use relative or root-relative URLs. The SDK will resolve:
+  //  - Absolute (https://) → fetched as-is (remote)
+  //  - Root-relative (/languages/en.json) → window.location.origin + path
+  //  - Relative (languages/en.json) → against <base href> if present, else against origin root
+  window.addEventListener("onPrismLoaded", async function (event) {
+    await event.detail.prism.render({
+      localization: {
+        language: "en",
+        fallbackLanguage: "en",
+        resourceUrls: {
+          en: "languages/en.json",
+          es: "languages/es.json",
+        },
+        // Optional: provide an absolute base URL to override resolution (e.g., behind a reverse proxy)
+        // resourceBasePath: window.location.origin + '/languages/',
+        merge: true,
+      },
+    });
+  });
+  /* Notes:
+  - Without resourceBasePath: absolute URLs fetch remotely; '/path' resolves from origin; 'path' resolves against <base href> or origin.
+  - If you set resourceBasePath, it acts as the base for relative paths.
+    - Files can be flat { key: value } or namespaced { translation: {...}, errors: {...} }.
+    - Use cache-busting (e.g., 'en.json?v=1') if you update files and see stale content.
+  */
+</script>
+```
+
+Using npm/TypeScript with the programmatic API, pass the same config to `PrismScanner`:
+
+```ts
+import { PrismScanner } from "@prismlabs/web-scan-ui-kit";
+
+const scanner = new PrismScanner({
+  localization: {
+    language: "en",
+    fallbackLanguage: "en",
+    resourceUrls: { en: "languages/en.json" },
+    // Optional: force base for relatives if needed:
+    // resourceBasePath: window.location.origin + '/languages/',
+    merge: true,
+  },
+});
+
+scanner.present();
+```
+
 ## Custom Assets (SVG overrides)
 
 You can replace built-in SVGs (under `public/images/svg`) with your own URLs.

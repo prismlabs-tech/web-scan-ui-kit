@@ -27,6 +27,9 @@ import { getRuntimeLanguage } from "./runtimeConfig";
  */
 export class SpeechSynthesizer {
   private language: string = "en-US";
+  private voice: SpeechSynthesisVoice | undefined;
+  private readonly isMobile: boolean;
+  private readonly onVoicesChanged: (() => void) | undefined;
 
   /**
    * Create a SpeechSynthesizer with an optional preferred BCP 47 language tag.
@@ -43,30 +46,49 @@ export class SpeechSynthesizer {
         ? navigator.languages?.[0] || navigator.language || "en-US"
         : "en-US";
     this.language = configured ?? autoLang;
+    // Cache platform check so we don't re-evaluate per utterance
+    this.isMobile =
+      typeof navigator !== "undefined" &&
+      /iphone|ipad|ipod/i.test(navigator.userAgent);
     if (!("speechSynthesis" in window)) {
       throw new Error("Speech Synthesis API is not supported in this browser.");
     }
 
-    window.speechSynthesis.cancel(); // Cancel any ongoing speech
-    window.speechSynthesis.speak(this.utterance());
-  }
+    // Prepare a stable handler reference. Also re-check runtime language which may change at runtime.
+    this.onVoicesChanged = () => {
+      const latest = getRuntimeLanguage();
+      if (latest && latest !== this.language) {
+        this.language = latest;
+      }
+      this.selectBestVoice();
+    };
 
-  /**
-   * Build a configured SpeechSynthesisUtterance with default parameters.
-   *
-   * Internal helper to ensure all utterances use the same language and voice
-   * characteristics.
-   *
-   * @param text - The text to speak. Empty by default (used for priming).
-   * @returns A configured SpeechSynthesisUtterance instance.
-   */
-  private utterance(text: string = ""): SpeechSynthesisUtterance {
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = this.language; // Default language
-    utterance.rate = 1.0; // Default rate
-    utterance.pitch = 1.0; // Default pitch
-    utterance.volume = 1.0; // Default volume
-    return utterance;
+    // Attempt to select the best matching voice immediately (may be empty at first)
+    // Call getVoices() proactively to trigger loading on some browsers
+    try {
+      void window.speechSynthesis.getVoices?.();
+    } catch {
+      // ignore
+    }
+    // Initial voice selection using configured or auto language
+    this.selectBestVoice();
+
+    // Listen for the voiceschanged event and re-select when available.
+    if (typeof window.speechSynthesis.onvoiceschanged !== "undefined") {
+      window.speechSynthesis.onvoiceschanged = this.onVoicesChanged;
+    }
+    try {
+      (window.speechSynthesis as any).addEventListener?.(
+        "voiceschanged",
+        this.onVoicesChanged
+      );
+    } catch {
+      // ignore
+    }
+
+    // Prime the engine with an empty utterance
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(this.utterance());
   }
 
   /**
@@ -77,7 +99,7 @@ export class SpeechSynthesizer {
    * @param text - The text to synthesize.
    */
   speak(text: string): void {
-    window.speechSynthesis.cancel(); // Cancel any ongoing speech
+    window.speechSynthesis.cancel();
     window.speechSynthesis.speak(this.utterance(text));
   }
 
@@ -86,5 +108,81 @@ export class SpeechSynthesizer {
    */
   cancel(): void {
     window.speechSynthesis.cancel();
+  }
+
+  // =====================
+  //     P R I V A T E
+  // =====================
+
+  /**
+   * Build a configured SpeechSynthesisUtterance with default parameters.
+   */
+  private utterance(text: string = ""): SpeechSynthesisUtterance {
+    const utterance = new SpeechSynthesisUtterance(text);
+    // iOS can ignore utterance.voice and prefers utterance.lang. So a solution is to
+    // ensure we pass a region-specific tag when only a base language (e.g., 'de') is configured.
+    const voices = window.speechSynthesis.getVoices?.() || [];
+    const lang = this.isMobile
+      ? this.normalizeLanguageForMobile(this.language, voices)
+      : this.language;
+    utterance.lang = lang;
+    if (this.voice) utterance.voice = this.voice;
+    utterance.rate = 1.0;
+    utterance.pitch = 1.0;
+    utterance.volume = 1.0;
+    return utterance;
+  }
+
+  /**
+   * Select the best matching voice for the current language.
+   */
+  private selectBestVoice(): void {
+    const voices = window.speechSynthesis.getVoices?.() || [];
+    if (!voices.length) return;
+    const desired = (
+      getRuntimeLanguage() ||
+      this.language ||
+      "en-US"
+    ).toLowerCase();
+    const base = desired.split("-")[0];
+
+    let match = voices.find((v) => v.lang?.toLowerCase() === desired);
+    if (!match) match = voices.find((v) => v.lang?.toLowerCase() === base);
+    if (!match)
+      match = voices.find((v) => v.lang?.toLowerCase().startsWith(base + "-"));
+    if (!match)
+      match = voices.find((v) => v.lang?.toLowerCase().includes(base));
+
+    if (match) {
+      this.voice = match;
+      this.language = match.lang || this.language;
+    }
+  }
+
+  /**
+   * Map base language codes to region-specific tags for mobile voice selection.
+   */
+  private normalizeLanguageForMobile(
+    desired: string,
+    voices: SpeechSynthesisVoice[]
+  ): string {
+    const lang = (desired || "en-US").trim();
+    if (lang.includes("-")) return lang; // already region-specific
+    const base = lang.toLowerCase();
+    const candidate =
+      voices.find((v) => v.lang?.toLowerCase() === base) ||
+      voices.find((v) => v.lang?.toLowerCase().startsWith(base + "-"));
+    if (candidate?.lang) return candidate.lang;
+    if (typeof navigator !== "undefined") {
+      const navLangs = [
+        ...(navigator.languages || []),
+        navigator.language,
+      ].filter(Boolean) as string[];
+      const navMatch = navLangs.find((l) =>
+        l?.toLowerCase().startsWith(base + "-")
+      );
+      if (navMatch) return navMatch;
+    }
+    return base;
   }
 }

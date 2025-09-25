@@ -139,6 +139,15 @@ export class SpeechSynthesizer {
   private selectBestVoice(): void {
     const voices = window.speechSynthesis.getVoices?.() || [];
     if (!voices.length) return;
+    // Exclude "Eloquence" voices (older-sounding synthesizer set) for better quality output
+    let candidateVoices = voices.filter(
+      (v) =>
+        !/eloquence/i.test(v.name || "") && !/eloquence/i.test(v.voiceURI || "")
+    );
+    if (!candidateVoices.length) {
+      // Fallback: if everything was filtered (unlikely) use original list
+      candidateVoices = voices;
+    }
     const desired = (
       getRuntimeLanguage() ||
       this.language ||
@@ -146,12 +155,15 @@ export class SpeechSynthesizer {
     ).toLowerCase();
     const base = desired.split("-")[0];
 
-    let match = voices.find((v) => v.lang?.toLowerCase() === desired);
-    if (!match) match = voices.find((v) => v.lang?.toLowerCase() === base);
+    let match = candidateVoices.find((v) => v.lang?.toLowerCase() === desired);
     if (!match)
-      match = voices.find((v) => v.lang?.toLowerCase().startsWith(base + "-"));
+      match = candidateVoices.find((v) => v.lang?.toLowerCase() === base);
     if (!match)
-      match = voices.find((v) => v.lang?.toLowerCase().includes(base));
+      match = candidateVoices.find((v) =>
+        v.lang?.toLowerCase().startsWith(base + "-")
+      );
+    if (!match)
+      match = candidateVoices.find((v) => v.lang?.toLowerCase().includes(base));
 
     if (match) {
       this.voice = match;

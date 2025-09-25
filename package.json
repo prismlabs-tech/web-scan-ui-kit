@@ -1,6 +1,6 @@
 {
   "name": "@prismlabs/web-scan-ui-kit",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "Core functionality for the Prism web scanning SDK",
   "homepage": "https://prismlabs.tech",
   "main": "dist/index.js",

@@ -108,7 +108,10 @@ const LevelScreen: React.FC<LevelScreenProps> = ({ prismSession }) => {
                 <img
                   src={resolveSvg("phone_position")}
                   alt="Phone Position"
-                  style={{ width: "150px", height: "150px" }}
+                  style={{
+                    width: "var(--illustration-size)",
+                    height: "var(--illustration-size)",
+                  }}
                 />
               </div>
             }

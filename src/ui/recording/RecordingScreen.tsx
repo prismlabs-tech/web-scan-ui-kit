@@ -147,7 +147,10 @@ const RecordingScreen: React.FC<RecordingScreenProps> = ({ prismSession }) => {
                 <img
                   src={resolveSvg("spin")}
                   alt="Spin Icon"
-                  style={{ width: "150px", height: "150px" }}
+                  style={{
+                    width: "var(--illustration-size)",
+                    height: "var(--illustration-size)",
+                  }}
                 />
               </div>
             }

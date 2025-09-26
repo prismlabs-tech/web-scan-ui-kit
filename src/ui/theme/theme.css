@@ -50,4 +50,7 @@
     --body-font-size: 1rem;
     --body-font-weight: normal;
     --body-line-height: 1.5;
+
+    /* Asset Size */
+    --illustration-size: 150px;
 }

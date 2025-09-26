@@ -49,6 +49,7 @@ Common variables you may want to override quickly:
 - Colors (actions/feedback/surfaces): `--primary-color`, `--success-color`, `--error-color`, `--background-color`, `--secondary-background-color`, `--shadow-color`, `--border-color`
 - Text colors: `--title-text-color` (large titles), `--text-color` (body), `--disabled-text-color`, `--button-text-color`
 - Icons: `--primary-icon-color` (applies to masked SVG icons like YellowIcon), `--icon-background-color`
+- Asset size (illustrations/spinner): `--illustration-size` (default `150px`)
 - Modal close button: `--close-button-background-color`, `--close-button-icon-color`
 - Radii: `--primary-button-corner-radius`, `--small-button-corner-radius`, `--card-corner-radius`, `--sheet-corner-radius`
 - Typography: `--font-family`, `--large-title-font-size`, `--large-title-font-weight`, `--large-title-line-height`, `--secondary-title-*`, `--body-*`
@@ -78,6 +79,9 @@ Below is a quick reference of the most relevant variables and what they affect i
 - Icons
   - `--primary-icon-color`: Foreground color for masked SVG icons (e.g., YellowIcon)
   - `--icon-background-color`: Round icon badge background
+
+- Illustrations and spinners
+  - `--illustration-size`: Controls the rendered size of banner/illustration assets and the spinner (e.g., Positioning, Posing, Recording, Level screens). Default is `150px`.
 
 - Modal close button
   - `--close-button-background-color`: Background color of the modal close button
@@ -125,6 +129,15 @@ Example (Icon colors and badge):
 .prism-css {
   --primary-icon-color: #121111 !important; /* masked SVG foreground */
   --icon-background-color: #fbda6b !important; /* circular badge behind icon */
+}
+```
+
+Example (Adjust illustration/spinner size):
+
+```css
+.prism-css {
+  /* Increase the size of banner illustrations and spinner */
+  --illustration-size: 200px !important; /* default is 150px */
 }
 ```
 
@@ -312,6 +325,7 @@ How it works:
 
 ### Troubleshooting
 
-- If an override key doesn’t appear, double‑check the exact translation path used in code (e.g., `t('leveling.title')`).
+- If the theme changes are not being applied, make sure you are using `!important` to for an override.
 - If other strings disappear, ensure `merge: true` is set; `false` replaces the whole namespace.
 - For remote JSON/SVG from another origin, verify CORS headers and try a hard refresh to avoid caching.
+- If illustrations look too large or too small, adjust `--illustration-size` on the container that wraps the widget (e.g., `.prism-css { --illustration-size: 180px !important; }`).

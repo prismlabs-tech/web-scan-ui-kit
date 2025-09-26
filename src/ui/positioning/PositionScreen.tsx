@@ -204,7 +204,10 @@ const PositionScreen: React.FC<PositionScreenProps> = ({ prismSession }) => {
                 <img
                   src={resolveSvg("get_in_position")}
                   alt="User Position"
-                  style={{ width: "150px", height: "150px" }}
+                  style={{
+                    width: "var(--illustration-size)",
+                    height: "var(--illustration-size)",
+                  }}
                 />
               </div>
             }

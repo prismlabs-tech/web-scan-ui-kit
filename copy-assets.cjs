@@ -49,9 +49,11 @@ function copyDirectory(srcDir, distDir) {
 }
 
 copyCssFiles(SRC_DIR, DIST_DIR);
-// Copy public SVGs -> dist/images/svg
-copyDirectory(
-  path.resolve(__dirname, "public/images/svg"),
-  path.resolve(__dirname, "dist/images/svg")
-);
+// Copy public SVGs -> dist/images/svg only for non-module builds
+if (process.env.DEPLOYMENT_TYPE !== "module") {
+  copyDirectory(
+    path.resolve(__dirname, "public/images/svg"),
+    path.resolve(__dirname, "dist/images/svg")
+  );
+}
 console.log("All CSS assets copied.");

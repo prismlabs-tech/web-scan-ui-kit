@@ -1,4 +1,5 @@
 import { DeploymentType } from "../constants";
+import { svgAssets } from "./generated-svg";
 
 /** Runtime registry to override default SVG assets with custom URLs. */
 export interface PrismAssetConfig {
@@ -33,6 +34,11 @@ export function resolveSvg(name: string): string {
       ? DeploymentType.PACKAGE
       : (rawDeployment as any as DeploymentType);
 
+  // For package/module build: return inlined data URL
+  if (deployment === DeploymentType.PACKAGE) {
+    return svgAssets[key] || `/images/svg/${key}.svg`;
+  }
+
   // CDN build: prefix with CDN_URL
   if (deployment === DeploymentType.CDN) {
     const cdn = (process.env.CDN_URL as string) || "";
@@ -44,29 +50,8 @@ export function resolveSvg(name: string): string {
     return `/images/svg/${key}.svg`;
   }
 
-  // Package/module build: resolve asset relative to this module file using import.meta.url
-  // This allows bundlers to include the asset from node_modules.
-  try {
-    // dist structure: dist/assets/assetRegistry.js -> dist/images/svg/{key}.svg
-    const moduleUrl: string = (import.meta as any).url as string;
-
-    // In a browser, if the module URL is file:// or clearly points into /src/, fall back to public path
-    if (
-      typeof window !== "undefined" &&
-      (moduleUrl?.startsWith("file:") || /\/src\//.test(moduleUrl))
-    ) {
-      return `/images/svg/${key}.svg`;
-    }
-
-    const base = moduleUrl.slice(0, moduleUrl.lastIndexOf("/") + 1);
-    const href = new URL(`../images/svg/${key}.svg`, base).href;
-    // Ensure we don't return a non-http(s) URL in browsers
-    if (/^https?:/.test(href)) return href;
-    return `/images/svg/${key}.svg`;
-  } catch {
-    // Fallback for non-module environments: use public folder path
-    return `/images/svg/${key}.svg`;
-  }
+  // Fallback for non-module environments: use public folder path
+  return `/images/svg/${key}.svg`;
 }
 
 function normalizeKey(key: string): string {

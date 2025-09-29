@@ -9,8 +9,7 @@
   "type": "module",
   "exports": {
     ".": {
-      "import": "./dist/index.js",
-      "require": "./dist/index.js"
+      "import": "./dist/index.js"
     }
   },
   "keywords": [
@@ -40,7 +39,7 @@
     "rxjs": "^7.8.2",
     "styled-components": "^6.1.18",
     "web-vitals": "^2.1.4",
-    "@prismlabs/web-scan-core": "^0.0.19"
+    "@prismlabs/web-scan-core": "^0.0.25"
   },
   "devDependencies": {
     "@babel/core": "^7.27.4",
@@ -81,10 +80,10 @@
   },
   "scripts": {
     "build": "NODE_ENV='development' webpack",
-    "build:dev": "NODE_ENV='development' DEPLOYMENT_TYPE=module npm run gen:i18n && tsc && npm run copy:assets && npm run fix-esm-extensions",
-    "build:local": "NODE_ENV='local' DEPLOYMENT_TYPE=module npm run gen:i18n && tsc && npm run copy:assets && npm run fix-esm-extensions",
-    "build:stage": "NODE_ENV='stage' DEPLOYMENT_TYPE=module npm run gen:i18n && tsc && npm run copy:assets && npm run fix-esm-extensions",
-    "build:prod": "NODE_ENV='production' DEPLOYMENT_TYPE=module npm run gen:i18n && tsc && npm run copy:assets && npm run fix-esm-extensions",
+    "build:dev": "NODE_ENV='development' DEPLOYMENT_TYPE='module' bash -c 'npm run gen:i18n && npm run gen:assets && tsc && npm run copy:assets && npm run fix-esm-extensions && npm run replace-env'",
+    "build:local": "NODE_ENV='local' DEPLOYMENT_TYPE='module' bash -c 'npm run gen:i18n && npm run gen:assets && tsc && npm run copy:assets && npm run fix-esm-extensions && npm run replace-env'",
+    "build:stage": "NODE_ENV='stage' DEPLOYMENT_TYPE='module' bash -c 'npm run gen:i18n && npm run gen:assets && tsc && npm run copy:assets && npm run fix-esm-extensions && npm run replace-env'",
+    "build:prod": "NODE_ENV='production' DEPLOYMENT_TYPE='module' bash -c 'npm run gen:i18n && npm run gen:assets && tsc && npm run copy:assets && npm run fix-esm-extensions && npm run replace-env'",
     "build:cdn:dev": "NODE_ENV='development' CDN_ENV=development CDN_URL='https://cdn-dev.prismlabs.tech' DEPLOYMENT_TYPE=cdn SOURCEMAPS=true webpack",
     "build:cdn:local": "NODE_ENV='local' CDN_ENV=local CDN_URL='' DEPLOYMENT_TYPE=cdn SOURCEMAPS=true webpack",
     "build:cdn:stage": "NODE_ENV='stage' CDN_ENV=stage CDN_URL='https://cdn-stage.prismlabs.tech' DEPLOYMENT_TYPE=cdn SOURCEMAPS=true webpack",
@@ -101,8 +100,10 @@
     "test": "CDN_ENV=local jest ./src",
     "type-check": "tsc --noEmit",
     "fix-esm-extensions": "node fix-esm-extensions.cjs",
+    "replace-env": "node replace-env.cjs",
     "copy:assets": "node copy-assets.cjs",
-    "gen:i18n": "node generate-i18n.cjs"
+    "gen:i18n": "node generate-i18n.cjs",
+    "gen:assets": "node generate-assets.cjs"
   },
   "eslintConfig": {
     "extends": [

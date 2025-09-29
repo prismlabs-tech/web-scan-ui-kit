@@ -7,6 +7,12 @@ import { findAndRenderPrismButton } from "./ui/prism-button/prism-button";
 import "./ui/theme/theme.css";
 import { PrismConfig, PrismInstance } from "./widgetConfig";
 
+// Set React Modal app element globally to avoid errors
+import ReactModal from "react-modal";
+if (typeof document !== "undefined" && document.body) {
+  ReactModal.setAppElement(document.body);
+}
+
 const Prism: PrismInstance = {
   render: async (config: PrismConfig) => {
     if (config?.localization) {
@@ -22,13 +28,13 @@ const Prism: PrismInstance = {
   unmount() {
     // leaving this empty function for legacy support
   },
-  version: process.env.PRISM_VERSION as string,
+  version: process.env.PRISM_VERSION || "0.0.0",
 };
 
 async function initializeWidget(config: PrismConfig) {
   console.log("Initializing Prism SDK");
   console.log(
-    `Prism SDK version ${process.env.PRISM_VERSION} with config: ${JSON.stringify(config)}`
+    `Prism SDK version ${process.env.PRISM_VERSION || "0.0.0"} with config: ${JSON.stringify(config)}`
   );
 
   findAndRenderPrismButton();

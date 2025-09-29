@@ -19,7 +19,7 @@ type Unsubscribe = () => void;
  * Refer to `PrismConfig` for available configuration options.
  */
 export class PrismScanner implements PrismInstance {
-  version = process.env.PRISM_VERSION as string;
+  version = process.env.PRISM_VERSION || "0.0.0";
 
   constructor(config: PrismConfig) {
     void this.render(config);

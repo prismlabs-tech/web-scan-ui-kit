@@ -15,6 +15,10 @@ if [[ "$CIRCLE_TAG" =~ $PROD_REGEXP ]]; then
     echo "Production release detected: $CIRCLE_TAG"
     echo "-------------------------------------------------------------------"
     npm run build:cdn:prod
+
+    echo "-------------------------------------------------------------------"
+    echo "Push npm package ..."
+    echo "-------------------------------------------------------------------"
     npm publish --access public
 
 elif [[ "$CIRCLE_TAG" =~ $STAGE_REGEXP ]]; then

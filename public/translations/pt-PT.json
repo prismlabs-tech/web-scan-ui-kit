@@ -1,0 +1,105 @@
+{
+  "detectionError": {
+    "text": {
+      "notInFrame": "Nenhum corpo detetado",
+      "incompleteData": "Centro",
+      "multiplePoses": "Uma pessoa",
+      "moveRight": "Direita",
+      "moveLeft": "Esquerda",
+      "moveBack": "Para trás",
+      "moveClose": "Mais perto",
+      "occludedFeet": "Mova o dispositivo",
+      "faceForward": "Enfrente a câmara",
+      "cameraTooHigh": "Abaixe o dispositivo",
+      "cameraTooLow": "Levante o dispositivo",
+      "emptySpaceTop": "Abaixe o dispositivo",
+      "emptySpaceBottom": "Levante o dispositivo",
+      "notUpright": "Fique direito",
+      "badLegPose": "Afaste os pés",
+      "badArmPose": "Estenda os braços",
+      "rightArmRaised": "Estenda os braços",
+      "leftArmRaised": "Estenda os braços",
+      "rightArmTooHigh": "Baixe o braço direito",
+      "leftArmTooHigh": "Baixe o braço esquerdo",
+      "rightArmTooLow": "Eleve o braço direito",
+      "leftArmTooLow": "Eleve o braço esquerdo",
+      "badArmAlignment": "Estenda os braços"
+    },
+    "voice": {
+      "notInFrame": "Posicione-se em frente à câmara",
+      "incompleteData": "O seu corpo deve estar todo visível",
+      "multiplePoses": "Apenas uma pessoa",
+      "moveRight": "Desloque-se para a direita",
+      "moveLeft": "Desloque-se para a esquerda",
+      "moveBack": "Afaste-se",
+      "moveClose": "Aproxime-se",
+      "occludedFeet": "Mova o dispositivo para que os seus pés fiquem visíveis",
+      "faceForward": "Vire-se para encarar a câmara",
+      "cameraTooHigh": "Tente baixar o dispositivo até à altura da cintura",
+      "cameraTooLow": "Tente elevar o dispositivo até à altura da cintura",
+      "emptySpaceTop": "Tente baixar o dispositivo até à altura da cintura",
+      "emptySpaceBottom": "Tente elevar o dispositivo até à altura da cintura",
+      "notUpright": "Stand upright",  // no translation in table, kept English
+      "badLegPose": "Ponha os pés afastados à largura dos ombros",
+      "badArmPose": "Estenda os braços ao lado do corpo e faça um punho",
+      "rightArmRaised": "Estenda os braços ao lado do corpo e faça um punho",
+      "leftArmRaised": "Estenda os braços ao lado do corpo e faça um punho",
+      "rightArmTooHigh": "Baixe lentamente o braço direito",
+      "leftArmTooHigh": "Baixe lentamente o braço esquerdo",
+      "rightArmTooLow": "Levante lentamente o braço direito",
+      "leftArmTooLow": "Levante lentamente o braço esquerdo",
+      "badArmAlignment": "Estenda os braços ao lado do corpo e faça um punho"
+    }
+  },
+  "cameraError": {
+    "title": "Erro da Câmara",
+    "description": "Não conseguimos aceder à sua câmara. Por favor verifique as definições do dispositivo e assegure-se de que as permissões de câmara estão ativadas para esta aplicação.",
+    "button": "Fechar"
+  },
+  "leveling": {
+    "title": "Posicionamento do dispositivo",
+    "description": "Posicione o seu dispositivo à altura da cintura e use o ecrã seguinte para nivelar.",
+    "button": "Nivelar dispositivo",
+    "level": {
+      "level": "Nivelado",
+      "backwards": "Incline o dispositivo na sua direção",
+      "forwards": "Incline o dispositivo para longe de si",
+      "unknownLevel": "Incline o dispositivo"
+    }
+  },
+  "positioning": {
+    "title": "Coloque-se em posição",
+    "text": {
+      "completeMessage": "Por favor permaneça neste local pelo resto da sessão de mapeamento corporal."
+    },
+    "voice": {
+      "prepare": "Fique em frente ao seu telemóvel para que todo o seu corpo fique visível",
+      "complete": "Permaneça neste local pelo resto da sessão de mapeamento corporal.",
+      "completeMessage": "Permaneça neste local pelo resto da sessão de mapeamento corporal."
+    }
+  },
+  "posing": {
+    "title": "Pose",
+    "voice": {
+      "prepare": "Faça uma pose com os pés afastados à largura dos ombros e os braços estendidos ao lado do corpo. Faça um punho."
+    }
+  },
+  "recording": {
+    "title": "Scan",
+    "text": {
+      "ready": "Pronto",
+      "spin": "Girar"
+    },
+    "voice": {
+      "prepare": "Prepare-se para fazer uma volta completa e aguarde a contagem decrescente.",
+      "ready": "Pronto",
+      "spin": "Girar",
+      "finished": "Concluído"
+    }
+  },
+  "finished": {
+    "title": "Scan Concluído!",
+    "description": "O seu scan foi capturada com sucesso.",
+    "viewResults": "Ver Resultados"
+  }
+}

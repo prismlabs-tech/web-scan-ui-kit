@@ -75,7 +75,11 @@ export class RecordingStateDistributor {
     this.updateRecordingState(RecordingState.starting());
 
     // Manage timing of the RecordingState.Starting phase
-    this._startingTimeout = setTimeout(() => {
+    this._startingTimeout = setTimeout(async () => {
+      // make sure the recorder is warmed up before starting the preparation countdown
+      // (it is warmed up automatically, but we want to be sure it's ready)
+      await this.prismSession.captureSession.warmUpRecorder();
+
       this._preparationTimer.start();
     }, 3500);
   }
@@ -107,8 +111,9 @@ export class RecordingStateDistributor {
   private setupTimers(): void {
     this._preparationTimer.onTick = (count: number) => {
       this.updateRecordingState(RecordingState.preparing(count));
-      // start session recording one second early
-      if (count === 1) {
+      // start session recording when showing 'ready'
+      // so capture is active before 'spin' and the countdown
+      if (count === 2) {
         this.prismSession.captureSession.startRecording();
       }
     };

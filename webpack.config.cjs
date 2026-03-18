@@ -103,7 +103,9 @@ const resolve = {
     "~": path.resolve(__dirname, "src/"),
   },
   extensions: ["*", ".ts", ".tsx", ".js", ".jsx"],
-  modules: [srcPath, "node_modules"],
+  // Include project node_modules absolutely so linked packages (e.g. file:../web-scan-core)
+  // can resolve deps like @babel/runtime that live in this app's node_modules
+  modules: [srcPath, path.resolve(__dirname, "node_modules"), "node_modules"],
 };
 
 module.exports = {

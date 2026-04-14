@@ -14,6 +14,7 @@ import {
   takeUntil,
 } from "rxjs";
 import { distinctUntilChanged, map, shareReplay } from "rxjs/operators";
+import { requireConsecutive } from "../../utils/require-consecutive";
 
 export enum PositioningStateType {
   Starting,
@@ -30,7 +31,7 @@ export class PositioningState {
 
   private constructor(
     type: PositioningStateType,
-    feedback?: DetectionFeedback
+    feedback?: DetectionFeedback,
   ) {
     this.type = type;
     this.detectionFeedback = feedback;
@@ -84,10 +85,18 @@ export class PositioningStateDistributor {
           return PositioningState.verifyingConsistency();
         } else {
           return PositioningState.assisting(
-            getDetectionFeedbackFromPositionResult(readiness.result)
+            getDetectionFeedbackFromPositionResult(readiness.result),
           );
         }
       }),
+      // Require 7 consecutive non-approved frames before leaving VerifyingConsistency.
+      // This prevents brief landmark jitter from resetting the checkmark progress.
+      requireConsecutive(
+        7,
+        (newState, lastEmitted) =>
+          lastEmitted.type === PositioningStateType.VerifyingConsistency &&
+          newState.type === PositioningStateType.Assisting,
+      ),
       conditionalThrottle(2000, true, (newState, oldState) => {
         switch (newState.type) {
           case PositioningStateType.VerifyingConsistency:
@@ -123,7 +132,7 @@ export class PositioningStateDistributor {
               case PositioningStateType.Assisting:
                 return checkDetectionFeedbackEquality(
                   oldState.detectionFeedback,
-                  newState.detectionFeedback
+                  newState.detectionFeedback,
                 );
               default:
                 return false;
@@ -140,7 +149,7 @@ export class PositioningStateDistributor {
         }
       }),
       takeUntil(this.stop$),
-      shareReplay(1)
+      shareReplay(1),
     );
   }
 

@@ -19,6 +19,7 @@ import {
   takeUntil,
 } from "rxjs";
 import { shareReplay } from "rxjs/operators";
+import { requireConsecutive } from "../../utils/require-consecutive";
 
 export enum PosingStateType {
   Starting,
@@ -73,7 +74,7 @@ export class PosingStateDistributor {
 
   constructor(
     positionReadinessDistributor: PositionReadinessDistributor,
-    poseReadinessDistributor: PoseReadinessDistributor
+    poseReadinessDistributor: PoseReadinessDistributor,
   ) {
     this.posingState = combineLatest([
       positionReadinessDistributor.distinctReadiness,
@@ -92,16 +93,26 @@ export class PosingStateDistributor {
           } else {
             if (positionReadiness.result.type !== PositionResultType.Approved) {
               return PosingState.assisting(
-                getDetectionFeedbackFromPositionResult(positionReadiness.result)
+                getDetectionFeedbackFromPositionResult(
+                  positionReadiness.result,
+                ),
               );
             } else {
               return PosingState.assisting(
-                getDetectionFeedbackFromPoseResult(poseReadiness.result)
+                getDetectionFeedbackFromPoseResult(poseReadiness.result),
               );
             }
           }
         }
       }),
+      // Require 7 consecutive non-approved frames before leaving VerifyingConsistency.
+      // This prevents brief landmark jitter from resetting the checkmark progress.
+      requireConsecutive(
+        7,
+        (newState, lastEmitted) =>
+          lastEmitted.type === PosingStateType.VerifyingConsistency &&
+          newState.type === PosingStateType.Assisting,
+      ),
       conditionalThrottle(2500, true, (newState, oldState) => {
         // don't immediately switch errors while assisting
         return (
@@ -121,7 +132,7 @@ export class PosingStateDistributor {
             if (newState.type === PosingStateType.Assisting) {
               return checkDetectionFeedbackEquality(
                 oldState.detectionFeedback,
-                newState.detectionFeedback
+                newState.detectionFeedback,
               );
             }
             return false;
@@ -130,7 +141,7 @@ export class PosingStateDistributor {
         }
       }),
       takeUntil(this.stop$),
-      shareReplay(1)
+      shareReplay(1),
     );
   }
 
